@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_medium">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Mon, 25 May" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_city_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/barrier_top_temp_icon"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_date"
+        tools:text="Maputo" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_view_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/barrier_conditions"
+        app:layout_constraintStart_toEndOf="@+id/text_view_temp"
+        android:layout_marginTop="@dimen/spacing_small"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_city_name"
+        tools:src="@drawable/rain" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+        app:layout_constraintStart_toStartOf="@+id/text_view_city_name"
+        app:layout_constraintTop_toTopOf="@+id/barrier_top_temp_icon"
+        app:layout_constraintBottom_toBottomOf="@id/barrier_bottom_icon"
+        tools:text="22º" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_weather_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_min_max"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/barrier_top_temp_icon"
+        app:layout_constraintVertical_chainStyle="spread"
+        tools:text="Mostly cloudy" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_min_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_feels_like"
+        app:layout_constraintEnd_toEndOf="@+id/text_view_weather_description"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_weather_description"
+        tools:text="22º/21º" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_view_feels_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="@id/barrier_bottom_icon"
+        app:layout_constraintEnd_toEndOf="@+id/text_view_min_max"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_min_max"
+        tools:text="Feels like 21º" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_conditions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="text_view_weather_description, text_view_min_max, text_view_feels_like" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_top_temp_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="image_view_icon,text_view_temp" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_bottom_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="image_view_icon" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
