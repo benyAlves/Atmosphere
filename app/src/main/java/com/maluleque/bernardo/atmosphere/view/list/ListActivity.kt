@@ -28,10 +28,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListActivity : AppCompatActivity() {
 
-    lateinit var weatherCurrentLocationView: View
-    lateinit var weatherCurrentLocationLoadingView: View
-    lateinit var weatherCurrentLocationErrorView: View
-    lateinit var permissionErrorView: View
+    private lateinit var weatherCurrentLocationView: View
+    private lateinit var weatherCurrentLocationLoadingView: View
+    private lateinit var weatherCurrentLocationErrorView: View
+    private lateinit var permissionErrorView: View
     private lateinit var recyclerView: RecyclerView
     private lateinit var shimmer: View
     private lateinit var dateTextView: AppCompatTextView
