@@ -13,7 +13,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.maluleque.bernardo.atmosphere.view.model.UserLocation
 
-class LocationLiveData(val context: Context) : LiveData<UserLocation>() {
+class LocationLiveData(private val context: Context) : LiveData<UserLocation>() {
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 

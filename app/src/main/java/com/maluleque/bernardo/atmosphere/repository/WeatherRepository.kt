@@ -10,8 +10,8 @@ class WeatherRepository(private val weatherApi: WeatherApi) {
     suspend fun fetchCityWeatherByCode(
         cities: List<City>
     ) = weatherApi.fetchCountryWeatherByCityName(
-        //TODO remove later
-            cities = "1040652,2267057,4865871,2968815,4348460,2618425,6127261,3846616,4192205,4548393,4739232"
+        //TODO remove later cities not encoded correctly
+            cities = "2267057,4865871,2968815,4348460,2618425,6127261,3846616,4192205,4548393,4739232"
     )
 
 

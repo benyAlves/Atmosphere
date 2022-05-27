@@ -12,7 +12,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
-        android:visibility="gone"
         android:id="@+id/current_location_weather"
         layout="@layout/main_list_item"
         app:layout_constraintEnd_toEndOf="parent"

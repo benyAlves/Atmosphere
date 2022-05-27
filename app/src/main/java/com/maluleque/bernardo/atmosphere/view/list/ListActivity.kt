@@ -1,10 +1,13 @@
 package com.maluleque.bernardo.atmosphere.view.list
 
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
@@ -15,18 +18,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.maluleque.bernardo.atmosphere.R
-import com.maluleque.bernardo.atmosphere.api.WeatherDataResponse
 import com.maluleque.bernardo.atmosphere.utils.Status
+import com.maluleque.bernardo.atmosphere.view.intentToDetails
+import com.maluleque.bernardo.atmosphere.view.intentToLocationSettings
 import com.maluleque.bernardo.atmosphere.view.model.Cities.listOfCities
 import com.maluleque.bernardo.atmosphere.view.model.WeatherInfo
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class ListActivity : AppCompatActivity() {
 
-    lateinit var weatherCurrentLocationView: View
-    lateinit var weatherCurrentLocationLoadingView: View
-    lateinit var weatherCurrentLocationErrorView: View
-    lateinit var permissionErrorView: View
+    private lateinit var weatherCurrentLocationView: View
+    private lateinit var weatherCurrentLocationLoadingView: View
+    private lateinit var weatherCurrentLocationErrorView: View
+    private lateinit var permissionErrorView: View
     private lateinit var recyclerView: RecyclerView
     private lateinit var shimmer: View
     private lateinit var dateTextView: AppCompatTextView
@@ -36,6 +41,8 @@ class ListActivity : AppCompatActivity() {
     private lateinit var minMaxTextView: AppCompatTextView
     private lateinit var feelsLikeTextView: AppCompatTextView
     private lateinit var iconImageView: AppCompatImageView
+    private lateinit var tryAgainButton: AppCompatButton
+    private lateinit var tryAgainPermission: AppCompatButton
 
     private val viewModel by viewModel<WeatherListViewModel>()
 
@@ -57,19 +64,36 @@ class ListActivity : AppCompatActivity() {
         minMaxTextView = findViewById(R.id.text_view_min_max)
         feelsLikeTextView = findViewById(R.id.text_view_feels_like)
 
+        tryAgainButton = findViewById(R.id.button_refresh_current_weather)
+        tryAgainPermission = findViewById(R.id.button_refresh_current_weather)
+
+
+        tryAgainPermission.setOnClickListener {
+            requestLocationPermission()
+            requestLocationUpdate()
+        }
+
+        tryAgainButton.setOnClickListener {
+            requestLocationPermission()
+            requestLocationUpdate()
+        }
 
         recyclerView.apply {
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
         fetchCitiesWeather()
+        fetchCurrentLocationWeather()
+        requestLocationPermission()
+    }
+
+    private fun fetchCurrentLocationWeather() {
         viewModel.getLocationLiveData().observe(this, Observer{
             getCurrentLocationWeather(
                 latitude = it.latitude,
                 longitude = it.longitude
             )
         })
-        requestLocationPermission()
     }
 
     private fun getCurrentLocationWeather(latitude: String, longitude: String) {
@@ -112,22 +136,57 @@ class ListActivity : AppCompatActivity() {
 
         cityTextView.text = data.cityName
         val description = data.weather.first().description
-        descriptionTextView.text = description.replaceFirst(description[0], description[0].uppercaseChar())
+        descriptionTextView.text = description.replaceFirst(
+            description.first(),
+            description.first().uppercaseChar()
+        )
         dateTextView.text = data.time
         tempTextView.text = data.main.currentTemp
         feelsLikeTextView.text = data.main.currentFeel
-        minMaxTextView.text = "${data.main.currentMin}/${data.main.currentMax}"
+        minMaxTextView.text = "${data.main.currentMin}/${data.main.currentMax}" //Todo use string resources
         iconImageView.load(data.weather.first().mainItemIconUrl) {
             crossfade(true)
+        }
+
+        weatherCurrentLocationView.setOnClickListener {
+            startActivity(intentToDetails(data))
         }
     }
 
     private fun requestLocationPermission() {
         if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED){
-            requestLocationUpdate()
+            if (isGpsEnabled()) {
+                requestLocationUpdate()
+            }else{
+                requestEnableGps()
+            }
         }else{
             permission.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
         }
+    }
+
+    private fun requestEnableGps() {
+        val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
+        alertDialogBuilder
+            .setTitle(getString(R.string.atmosphere_title_enable_location))
+            .setMessage(getString(R.string.atmosphere_message_enable_location))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.atmosphere_button_location_settings)
+            ) { _, _ ->
+                startActivity(intentToLocationSettings())
+            }
+        alertDialogBuilder.setNegativeButton(getString(R.string.atmosphere_button_cancel)
+        ) { dialog, _ ->
+            dialog.cancel()
+            onCurrentLocationError()
+        }.create()
+
+        alertDialogBuilder.show()
+    }
+
+    private fun isGpsEnabled() : Boolean {
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     private val permission = registerForActivityResult(ActivityResultContracts.RequestPermission()){ hasPermission ->
@@ -173,7 +232,7 @@ class ListActivity : AppCompatActivity() {
         shimmer.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
         recyclerView.adapter = WeatherListAdapter(data, onClick = {
-
+            startActivity(intentToDetails(it))
         })
     }
 

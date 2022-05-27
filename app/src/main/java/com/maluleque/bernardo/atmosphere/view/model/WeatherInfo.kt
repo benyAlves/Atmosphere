@@ -1,8 +1,10 @@
 package com.maluleque.bernardo.atmosphere.view.model
 
+import android.os.Parcelable
 import android.text.format.DateFormat
 import com.maluleque.bernardo.atmosphere.api.*
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.*
@@ -20,6 +22,7 @@ class WeatherInfo {
     }
 
 
+    @Parcelize
     data class WeatherData(
         val id: Int,
         val cityName: String,
@@ -27,7 +30,7 @@ class WeatherInfo {
         val main: Main,
         val wind: Wind,
         val weather: List<Weather>
-    ) {
+    ) : Parcelable {
         constructor(weatherData: WeatherDataResponse) : this(
             id = weatherData.id,
             cityName = weatherData.cityName,
@@ -40,13 +43,13 @@ class WeatherInfo {
         val time get() = DateFormat.format("MMM, dd yyyy", Date(date)).toString();
     }
 
-    @JsonClass(generateAdapter = true)
+    @Parcelize
     data class Weather(
         val id: String,
         val main: String,
         val description: String,
         val iconUrl: String
-    ) {
+    ) : Parcelable {
         constructor(weather: WeatherResponse) : this(
             id = weather.id,
             main = weather.main,
@@ -58,6 +61,7 @@ class WeatherInfo {
         val mainItemIconUrl get() = "http://openweathermap.org/img/wn/$iconUrl@4x.png"
     }
 
+    @Parcelize
     class Main(
         private val temp: Double,
         val feelsLike: Double,
@@ -65,7 +69,7 @@ class WeatherInfo {
         private val max: Double,
         val pressure: String,
         val humidity: String
-    ) {
+    ) : Parcelable {
         constructor(main: MainResponse) : this(
             temp = main.temp,
             feelsLike = main.feelsLike,
@@ -81,10 +85,11 @@ class WeatherInfo {
         val currentFeel get() = "Feels like ${feelsLike.roundTemp()}º"
     }
 
+    @Parcelize
     class Wind(
         val speed: Double,
         val deg: String
-    ) {
+    ) : Parcelable {
         constructor(wind: WindResponse) : this(
             speed = wind.speed,
             deg = wind.deg
