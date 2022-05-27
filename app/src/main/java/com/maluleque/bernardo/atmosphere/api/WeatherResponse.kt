@@ -17,6 +17,8 @@ data class WeatherDataResponse(
     val id: Int,
     @Json(name = "name")
     val cityName: String,
+    @Json(name = "dt")
+    val date: Long,
     @Json(name = "main")
     val main: MainResponse,
     @Json(name = "wind")
@@ -42,7 +44,7 @@ data class MainResponse(
     @Json(name = "temp")
     val temp: Double,
     @Json(name = "feels_like")
-    val feelsLike: String,
+    val feelsLike: Double,
     @Json(name = "temp_min")
     val min: Double,
     @Json(name = "temp_max")

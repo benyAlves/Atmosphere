@@ -39,7 +39,8 @@ class WeatherListAdapter(
             fun bind(weather: WeatherInfo.WeatherData) {
                 weatherResponse = weather
                 textViewCity.text = weather.cityName
-                textViewDescription.text = weather.weather.first().description
+                val description = weather.weather.first().description
+                textViewDescription.text = description.replaceFirst(description[0], description[0].uppercaseChar())
                 textViewMinMax.text = "${weather.main.currentMin}/${weather.main.currentMax}"
                 textViewTemp.text = weather.main.currentTemp
                 imageView.load(weather.weather.first().itemIconUrl) {

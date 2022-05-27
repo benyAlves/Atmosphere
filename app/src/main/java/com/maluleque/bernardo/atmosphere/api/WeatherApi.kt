@@ -1,6 +1,5 @@
 package com.maluleque.bernardo.atmosphere.api
 
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.*
@@ -14,11 +13,11 @@ interface WeatherApi {
         @Query("lang") language: String = Locale.getDefault().language
     ): WeatherListResponse
 
-    @GET
+    @GET("weather")
     suspend fun fetchCountryWeatherByGeoCoordinates(
         @Query("lat") latitude: String,
         @Query("lon") longitude: String,
-        @Query("appid") apiId: String = "",
+        @Query("appid") apiId: String = "8ef8cd9e1b203cbc2650c53bbfe18d29",
         @Query("units") units: String = "metric",
         @Query("lang") language: String = Locale.getDefault().language
     ): WeatherDataResponse
