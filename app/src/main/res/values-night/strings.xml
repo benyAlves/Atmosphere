@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Atmosphere</string>
     <string name="atmosphere_location_waring_message">Weather for current location require location permission and GPS enabled</string>
     <string name="atmosphere_refresh_current_location_weather_text">REFRESH</string>
     <string name="atmosphere_try_again_current_location_weather_text">TRY AGAIN</string>

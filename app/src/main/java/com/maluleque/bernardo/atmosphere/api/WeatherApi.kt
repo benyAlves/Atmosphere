@@ -7,18 +7,18 @@ import java.util.*
 interface WeatherApi {
     @GET("group")
     suspend fun fetchCountryWeatherByCityName(
-        @Query("id") cities: String,
+        @Query("id", encoded = true) cities: String,
         @Query("appid") apiId: String = "8ef8cd9e1b203cbc2650c53bbfe18d29",
         @Query("units") units: String = "metric",
         @Query("lang") language: String = Locale.getDefault().language
-    ): WeatherResponse
+    ): WeatherListResponse
 
-    @GET
+    @GET("weather")
     suspend fun fetchCountryWeatherByGeoCoordinates(
         @Query("lat") latitude: String,
         @Query("lon") longitude: String,
-        @Query("appid") apiId: String = "",
+        @Query("appid") apiId: String = "8ef8cd9e1b203cbc2650c53bbfe18d29",
         @Query("units") units: String = "metric",
         @Query("lang") language: String = Locale.getDefault().language
-    ): WeatherData
+    ): WeatherDataResponse
 }
