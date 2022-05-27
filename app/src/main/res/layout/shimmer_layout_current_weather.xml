@@ -10,6 +10,6 @@
     <View
         android:layout_width="match_parent"
         android:background="@color/shimmer_background"
-        android:layout_height="205dp"/>
+        android:layout_height="@dimen/atmosphere_current_location_view_height"/>
 
 </com.facebook.shimmer.ShimmerFrameLayout>

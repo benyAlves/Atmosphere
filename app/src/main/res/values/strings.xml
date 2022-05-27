@@ -4,4 +4,8 @@
     <string name="atmosphere_refresh_current_location_weather_text">REFRESH</string>
     <string name="atmosphere_try_again_current_location_weather_text">TRY AGAIN</string>
     <string name="atmosphere_location_error_message">We could not get weather information for you location, try again later</string>
+    <string name="atmosphere_message_enable_location">Enable Location in your device settings</string>
+    <string name="atmosphere_title_enable_location">Enable Location</string>
+    <string name="atmosphere_button_location_settings">Location Settings</string>
+    <string name="atmosphere_button_cancel">Cancel</string>
 </resources>
